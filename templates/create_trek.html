@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Trek</title>
+</head>
+<body>
+    <h1>Create Trek</h1>
+
+    <form method="POST">
+        <label>Trek Name</label><br>
+        <input type="text" name="trek_name" required><br><br>
+
+        <label>Location</label><br>
+        <input type="text" name="location" required><br><br>
+
+        <label>Difficulty</label><br>
+        <select name="difficulty">
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+        </select><br><br>
+
+        <label>Duration (Days)</label><br>
+        <input type="number" name="duration" required><br><br>
+
+        <label>Available Slots</label><br>
+        <input type="number" name="available_slots" required><br><br>
+
+        <label>Start Date</label><br>
+        <input type="date" name="start_date" required><br><br>
+
+        <label>End Date</label><br>
+        <input type="date" name="end_date" required><br><br>
+
+        <button type="submit">Create Trek</button>
+    </form>
+</body>
+</html>

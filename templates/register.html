@@ -18,8 +18,44 @@
         <label>Password</label><br>
         <input type="password" name="password"><br><br>
 
+        <label>Register As</label>
+
+        <select id="role" name="role" onchange="toggleStaffFields()">
+        <option value="Trekker">Trekker</option>
+        <option value="Staff">Staff</option>
+        </select>
+
+        <br><br>
+
+        <div id="staffFields" style="display:none;">
+
+            <label>Contact Number</label>
+            <input type="text" name="contact">
+
+            <br><br>
+
+            <label>Experience (Years)</label>
+            <input type="number" name="experience">
+
+        </div>
+
         <button type="submit">Register</button>
     </form>
+    
+    <script>
+        function toggleStaffFields() {
+
+            let role = document.getElementById("role").value;
+
+            let staffFields = document.getElementById("staffFields");
+
+            if (role === "Staff") {
+                staffFields.style.display = "block";
+            } else {
+                staffFields.style.display = "none";
+            }
+        }
+    </script>
     
 </body>
 </html>
