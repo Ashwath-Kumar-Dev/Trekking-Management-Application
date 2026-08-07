@@ -12,6 +12,29 @@
     <div class="container mt-5">
         <h2 class="text-centre">All Users</h2>
 
+        <form method="GET" action="/view_users" class="mb-3">
+
+        <div class="input-group">
+
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                value="{{ request.args.get('search','') }}"
+                placeholder="Search by username or email">
+
+            <button
+                class="btn btn-primary"
+                type="submit">
+
+                 Search
+
+           </button>
+
+        </div>
+
+        </form>
+
         <table class="table table-bordered table-striped table-hover">
             <thead class="table-dark">
                 <tr>
@@ -24,6 +47,8 @@
                     <th>Role</th>
 
                     <th>Status</th>
+
+                    <th>Action</th>
 
                 </tr>
             </thead>
@@ -41,6 +66,26 @@
                     <td>{{ user.role }}</td>
 
                     <td>{{ user.status }}</td>
+
+                    <td>
+
+                            {% if user.role != "Admin" and user.status == "ACTIVE" %}
+
+                            <a href="/deactivate_user/{{ user.id }}"
+                            class="btn btn-danger btn-sm">
+                                Deactivate
+                            </a>
+
+                            {% elif user.role!="Admin" and user.status=="BLACKLISTED"%}
+
+                            <a href="/activate_user/{{ user.id }}"
+                            class="btn btn-success btn-sm">
+                                Activate
+                            </a>
+
+                            {% endif %}
+
+                    </td>
 
                 </tr>
 

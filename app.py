@@ -5,6 +5,7 @@ from models import User,Trek,StaffProfile,Booking
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from datetime import date
+from sqlalchemy import or_
 
 app= Flask(__name__)
 app.secret_key = "my_super_secret_key"
@@ -71,6 +72,9 @@ def login():
     password =request.form.get("password")
 
     user = User.query.filter_by(email=email).first()
+
+    if user.status == "BLACKLISTED":
+        return "Your account has been deactivated."
 
     if user and check_password_hash(user.password, password):
         session["user_id"] = user.id
@@ -206,6 +210,13 @@ def view_treks():
         return "Access Denied!"
 
     treks = Trek.query.all()
+
+    search=search = request.args.get("search")
+
+    if search:
+        treks= Trek.query.filter(or_(Trek.trek_name.contains(search),Trek.location.contains(search))).all()
+    else:
+        treks=Trek.query.all()
 
     return render_template("view_treks.html", treks=treks)
 
@@ -459,10 +470,80 @@ def view_users():
 
     users = User.query.all()
 
+    search = request.args.get("search")
+
+    if search:
+        users = User.query.filter(or_(User.username.contains(search),User.email.contains(search))).all()
+
+    else:
+        users =User.query.all()
+
     return render_template(
         "view_users.html",
         users=users
     )
+#View all Staff
+@app.route("/view_staff")
+def view_staff():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "Admin":
+        return "Access Denied!"
+
+    search = request.args.get("search")
+    
+    if search:
+        staffs = StaffProfile.query.join(User).filter(or_(User.username.contains(search),User.email.contains(search))).all()
+    
+    else:
+        staffs =StaffProfile.query.all()
+    
+
+    return render_template("view_staff.html", staffs=staffs)
+
+#Deactivate the staff
+@app.route("/deactivate_staff/<int:staff_id>")
+def deactivate_staff(staff_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "Admin":
+        return "Access Denied!"
+
+    staff = StaffProfile.query.get_or_404(staff_id)
+
+    if staff.user.role == "Admin":
+        return "Cannot deactivate Admin."
+
+    staff.user.status = "BLACKLISTED"
+
+    db.session.commit()
+
+    return redirect("/view_staff")
+
+#Activate the staff
+@app.route("/activate_staff/<int:staff_id>")
+def activate_staff(staff_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "Admin":
+        return "Access Denied!"
+
+    staff = StaffProfile.query.get_or_404(staff_id)
+
+    if staff.approval_status != "Approved":
+        return "Only approved staff can be activated."
+
+    staff.user.status = "ACTIVE"
+
+    db.session.commit()
+
+    return redirect("/view_staff")
 
 # Views all bookings in admin
 @app.route("/view_bookings")
@@ -480,6 +561,48 @@ def view_bookings():
         "view_bookings.html",
         bookings=bookings
     )
+
+#Deactivate the user
+@app.route("/deactivate_user/<int:user_id>")
+def deactivate_user(user_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "Admin":
+        return "Access Denied!"
+
+    user = User.query.get_or_404(user_id)
+
+    if user.role == "Admin":
+        return "Cannot deactivate Admin."
+
+    user.status = "BLACKLISTED"
+
+    db.session.commit()
+
+    return redirect("/view_users")
+
+#Activate the user
+@app.route("/activate_user/<int:user_id>")
+def activate_user(user_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "Admin":
+        return "Access Denied!"
+
+    user = User.query.get_or_404(user_id)
+
+    user.status = "ACTIVE"
+
+    db.session.commit()
+
+    return redirect("/view_users")
+
+
+
 with app.app_context():
     db.create_all()
 
