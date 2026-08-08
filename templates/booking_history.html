@@ -9,62 +9,69 @@
 
 <body>
 
-<div class="container mt-5">
+<div class="container mt-5 position-relative">
 
-<h2>My Booking History</h2>
-
-<table class="table table-bordered table-striped table-hover">
-
-<thead class="table-dark">
-
-<tr>
-
-<th>Trek Name</th>
-
-<th>Location</th>
-
-<th>Booking Date</th>
-
-<th>Status</th>
-
-<th>Cancel</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-{% for booking in bookings %}
-
-<tr>
-
-<td>{{ booking.trek.trek_name }}</td>
-
-<td>{{ booking.trek.location }}</td>
-
-<td>{{ booking.booking_date }}</td>
-
-<td>{{ booking.status }}</td>
-
-<td>
-
-<a href="/cancel_booking/{{ booking.id }}"
-class="btn btn-danger btn-sm" onclick="return confirm('Are you sure want to cancel this trek?')">
-
-Cancel
-
+<a href="/trekker_dashboard" class="btn btn-primary position-absolute top-0 end-0">
+    🏠 Trekker Dashboard
 </a>
 
-</td>
 
-</tr>
+<div class="pt-5">
+    <h2>My Booking History</h2>
 
-{% endfor %}
+    <table class="table table-bordered table-striped table-hover">
 
-</tbody>
+    <thead class="table-dark">
 
-</table>
+    <tr>
+
+    <th>Trek Name</th>
+
+    <th>Location</th>
+
+    <th>Booking Date</th>
+
+    <th>Status</th>
+
+    <th>Cancel</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for booking in bookings %}
+
+    <tr>
+
+    <td>{{ booking.trek.trek_name }}</td>
+
+    <td>{{ booking.trek.location }}</td>
+
+    <td>{{ booking.booking_date }}</td>
+
+    <td>{{ booking.status }}</td>
+
+    <td>
+
+    <a href="/cancel_booking/{{ booking.id }}"
+    class="btn btn-danger btn-sm" onclick="return confirm('Are you sure want to cancel this trek?')">
+
+    Cancel
+
+    </a>
+
+    </td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+    </table>
+</div>
 
 </div>
 

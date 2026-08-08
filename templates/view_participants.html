@@ -9,99 +9,107 @@
 
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="text-centre">All Participants</h2>
+    <div class="container mt-5 position-relative">
+        <!-- Top Corner Home/Dashboard Button -->
+        <a href="/staff_dashboard" class="btn btn-primary position-absolute top-0 end-0">
+            🏠 Staff Dashboard
+        </a>
 
-        <h2>{{ trek.trek_name }}</h2>
+        <!-- Added padding-top so title doesn't hide under the button -->
+        <div class="pt-5">
+            <h2 class="text-centre">All Participants</h2>
 
-            <p>
-                <strong>Participants:</strong>
-                {{ participant_count }}
-            </p>
+            <h2>{{ trek.trek_name }}</h2>
 
-        <table class="table table-bordered table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Username</th>
+                <p>
+                    <strong>Participants:</strong>
+                    {{ participant_count }}
+                </p>
 
-                    <th>Email</th>
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Username</th>
 
-                    <th>Booking Status</th>
+                        <th>Email</th>
 
-                    <th>Booking Date</th>
+                        <th>Booking Status</th>
 
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for booking in bookings %}
+                        <th>Booking Date</th>
 
-                <tr> 
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
 
-                    <td>{{ booking.user.username }}</td>
+                    <tr> 
 
-                    <td>{{ booking.user.email }}</td>
+                        <td>{{ booking.user.username }}</td>
 
-                    <td>
+                        <td>{{ booking.user.email }}</td>
 
-                            {% if booking.status == "Booked" %}
-
-                            <span class="badge bg-success">
-                                Booked
-                            </span>
-
-                            {% elif booking.status == "Cancelled" %}
-
-                            <span class="badge bg-danger">
-                                Cancelled
-                            </span>
-
-                            {% else %}
-
-                            <span class="badge bg-secondary">
-                                {{ booking.status }}
-                            </span>
-
-                            {% endif %}
-
-                        </td>
-                    
-
-                    <td>{{ booking.booking_date }}</td>
-
-                    
                         <td>
 
-                            {% if booking.status == "Booked" %}
+                                {% if booking.status == "Booked" %}
 
-                            <a href="/update_booking_status/{{ booking.id }}"
-                            class="btn btn-success btn-sm">
-                                Mark Completed
-                            </a>
+                                <span class="badge bg-success">
+                                    Booked
+                                </span>
 
-                            {% elif booking.status == "Completed" %}
+                                {% elif booking.status == "Cancelled" %}
 
-                            <span class="badge bg-success">
-                                Completed
-                            </span>
+                                <span class="badge bg-danger">
+                                    Cancelled
+                                </span>
 
-                            {% elif booking.status == "Cancelled" %}
+                                {% else %}
 
-                            <span class="badge bg-danger">
-                                Cancelled
-                            </span>
+                                <span class="badge bg-secondary">
+                                    {{ booking.status }}
+                                </span>
 
-                            {% endif %}
+                                {% endif %}
 
-                        </td>
-                    
+                            </td>
+                        
 
-                </tr>
+                        <td>{{ booking.booking_date }}</td>
 
-                {% endfor %}
+                        
+                            <td>
 
-            </tbody>
-        </table>
+                                {% if booking.status == "Booked" %}
+
+                                <a href="/update_booking_status/{{ booking.id }}"
+                                class="btn btn-success btn-sm">
+                                    Mark Completed
+                                </a>
+
+                                {% elif booking.status == "Completed" %}
+
+                                <span class="badge bg-success">
+                                    Completed
+                                </span>
+
+                                {% elif booking.status == "Cancelled" %}
+
+                                <span class="badge bg-danger">
+                                    Cancelled
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+                        
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
 
     </div>
     

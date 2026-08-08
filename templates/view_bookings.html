@@ -8,40 +8,48 @@
     rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="text-centre">All Bookings</h2>
+    <div class="container mt-5 position-relative">
+        
+        <a href="/admin_dashboard" class="btn btn-primary position-absolute top-0 end-0">
+            🏠 Admin Dashboard
+        </a>
 
-        <table class="table table-bordered table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>Username</th>
+        
+        <div class="pt-5">
+            <h2 class="text-centre">All Bookings</h2>
 
-                    <th>Trekname</th>
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Username</th>
 
-                    <th>Booking Date</th>
+                        <th>Trekname</th>
 
-                    <th>Booking Status</th>
+                        <th>Booking Date</th>
 
-                    <th>Payment Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for booking in bookings %}
-                <tr>
-                    <td>{{ booking.user.username }}</td>
+                        <th>Booking Status</th>
 
-                    <td>{{ booking.trek.trek_name }}</td>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.user.username }}</td>
 
-                    <td>{{ booking.booking_date }}</td>
+                        <td>{{ booking.trek.trek_name }}</td>
 
-                    <td>{{ booking.status }}</td>
+                        <td>{{ booking.booking_date }}</td>
 
-                    <td>{{ booking.payment_status }}</td>
+                        <td>{{ booking.status }}</td>
 
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>

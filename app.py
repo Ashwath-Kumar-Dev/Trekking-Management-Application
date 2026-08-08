@@ -1,4 +1,4 @@
-from flask import Flask, flash,render_template,request,session,redirect
+from flask import Flask, flash,render_template,request,session,redirect,url_for
 from extensions import db
 from config import Config
 from models import User,Trek,StaffProfile,Booking   
@@ -25,41 +25,41 @@ def home():
 def about():
     return render_template("about.html")
 
-#register route
+from flask import Flask, render_template, request, redirect, url_for, flash
+
+#Register route
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
         return render_template("register.html")
-
+        
     username = request.form.get("username")
     email = request.form.get("email")
     password = request.form.get("password")
-    role= request.form.get("role")
-    contact= request.form.get("contact")
-    experience= request.form.get("experience")
-
+    role = request.form.get("role")
+    contact = request.form.get("contact")
+    experience = request.form.get("experience")
+    
     existing_user = User.query.filter_by(email=email).first()
-
     if existing_user:
-        return "Email already registered!"
-
+        flash("Email already registered!", "danger")
+        return redirect(url_for('register'))
+        
     hashed_password = generate_password_hash(password)
-
-    user = User(username=username , email=email, password=hashed_password,role=role,status="ACTIVE")
-
+    user = User(username=username, email=email, password=hashed_password, role=role, status="ACTIVE")
     db.session.add(user)
     db.session.commit()
-
+    
     if role == "Staff":
-
         staff = StaffProfile(user_id=user.id, contact=contact, experience=experience, approval_status="Pending")
-
         db.session.add(staff)
         db.session.commit()
+        flash("Staff Registration Submitted! Wait for Admin Approval.", "warning")
+        return redirect(url_for('login'))
+        
+    flash("Registered successful!", "success")
+    return redirect(url_for('login'))
 
-        return "Staff Registration Submitted! Wait for Admin Approval."
-
-    return "User Registered Successfully!"
 
 #login route
 @app.route("/login", methods=["GET", "POST"])

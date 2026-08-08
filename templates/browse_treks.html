@@ -8,60 +8,68 @@
     rel="stylesheet">
 </head>
 <body>
-<div class="container mt-5">
-        <h2 class= "text-center", style="color: burlywood; font-family: 'Times New Roman', Times, serif; ">Welcome {{ user.username }}</h2><br>
-        <h3>Browse The Treks </h3>
+<div class="container mt-5 position-relative">
+        
+        <a href="/trekker_dashboard" class="btn btn-primary position-absolute top-0 end-0">
+            🏠 Trekker Dashboard
+        </a>
 
-        <table class="table table-bordered table-striped table-hover">
+        
+        <div class="pt-5">
+            <h2 class= "text-center", style="color: burlywood; font-family: 'Times New Roman', Times, serif; ">Welcome {{ user.username }}</h2><br>
+            <h3>Browse The Treks </h3>
 
-        <thead class="table-dark">
+            <table class="table table-bordered table-striped table-hover">
 
-            <tr>
+            <thead class="table-dark">
 
-                <th>Trek Name</th>
+                <tr>
 
-                <th>Location</th>
+                    <th>Trek Name</th>
 
-                <th>Difficulty</th>
+                    <th>Location</th>
 
-                <th>Duration</th>
+                    <th>Difficulty</th>
 
-                <th>Slots</th>
+                    <th>Duration</th>
 
-                <th>Book</th>
+                    <th>Slots</th>
 
-            </tr>
+                    <th>Book</th>
 
-        </thead>
+                </tr>
 
-        <tbody>
+            </thead>
 
-            {% for trek in treks %}
+            <tbody>
 
-            <tr>
+                {% for trek in treks %}
 
-                <td>{{ trek.trek_name }}</td>
+                <tr>
 
-                <td>{{ trek.location }}</td>
+                    <td>{{ trek.trek_name }}</td>
 
-                <td>{{ trek.difficulty }}</td>
+                    <td>{{ trek.location }}</td>
 
-                <td>{{ trek.duration }}</td>
+                    <td>{{ trek.difficulty }}</td>
 
-                <td>{{ trek.available_slots }}</td>
+                    <td>{{ trek.duration }}</td>
 
-                <td>
-                    <a href="/book_trek/{{ trek.id }}"class="btn btn-success btn-sm">
-                        Book</a>
-                </td>
+                    <td>{{ trek.available_slots }}</td>
 
-            </tr>
+                    <td>
+                        <a href="/book_trek/{{ trek.id }}"class="btn btn-success btn-sm">
+                            Book</a>
+                    </td>
 
-            {% endfor %}
+                </tr>
 
-        </tbody>
+                {% endfor %}
 
-    </table>
+            </tbody>
+
+        </table>
+    </div>
 
 </div>
 

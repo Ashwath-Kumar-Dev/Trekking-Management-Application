@@ -9,126 +9,134 @@
 
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="text-centre">All Staff</h2>
+    <div class="container mt-5 position-relative">
+        
+        <a href="/admin_dashboard" class="btn btn-primary position-absolute top-0 end-0">
+            🏠 Admin Dashboard
+        </a>
 
-        <form method="GET" action="/view_staff" class="mb-3">
+       
+        <div class="pt-5">
+            <h2 class="text-centre">All Staff</h2>
 
-        <div class="input-group">
+            <form method="GET" action="/view_staff" class="mb-3">
 
-            <input
-                type="text"
-                name="search"
-                class="form-control"
-                value="{{ request.args.get('search','') }}"
-                placeholder="Search by username or email">
+            <div class="input-group">
 
-            <button
-                class="btn btn-primary"
-                type="submit">
+                <input
+                    type="text"
+                    name="search"
+                    class="form-control"
+                    value="{{ request.args.get('search','') }}"
+                    placeholder="Search by username or email">
 
-                 Search
+                <button
+                    class="btn btn-primary"
+                    type="submit">
 
-           </button>
+                     Search
 
-        </div>
+               </button>
 
-        </form>
+            </div>
 
-        <table class="table table-bordered table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    
+            </form>
 
-                    <th>Username</th>
+            <table class="table table-bordered table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        
 
-                    <th>Email</th>
+                        <th>Username</th>
 
-                    <th>Contact</th>
+                        <th>Email</th>
 
-                    <th>Experience</th>
+                        <th>Contact</th>
 
-                    <th>Status</th>
+                        <th>Experience</th>
 
-                    <th>Approval</th>
-                    
-                    <th>Action</th>
+                        <th>Status</th>
 
-                </tr>
-            </thead>
-            <tbody>
-                {% for staff in staffs %}
+                        <th>Approval</th>
+                        
+                        <th>Action</th>
 
-                <tr> 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for staff in staffs %}
 
-                    <td>{{ staff.user.username }}</td>
+                    <tr> 
 
-                    <td>{{ staff.user.email }}</td>
+                        <td>{{ staff.user.username }}</td>
 
-                    <td>{{ staff.contact }}</td>
+                        <td>{{ staff.user.email }}</td>
 
-                    <td>{{ staff.experience }}</td>
+                        <td>{{ staff.contact }}</td>
 
-                    <td>{% if staff.user.status == "ACTIVE" %}
+                        <td>{{ staff.experience }}</td>
 
-                    <span class="badge bg-success">
-                            ACTIVE
-                    </span>
+                        <td>{% if staff.user.status == "ACTIVE" %}
 
-                {% else %}
-
-                    <span class="badge bg-danger">
-                        BLACKLISTED
-                    </span>
-
-                {% endif %}</td>
-
-                    <td>{% if staff.approval_status == "Approved" %}
-
-                    <span class="badge bg-success">
-                            Approved
-                    </span>
-
-                    {% elif staff.approval_status == "Pending" %}
-
-                    <span class="badge bg-warning">
-                            Pending
-                    </span>
+                        <span class="badge bg-success">
+                                ACTIVE
+                        </span>
 
                     {% else %}
 
-                    <span class="badge bg-danger">
-                        Rejected
-                    </span>
+                        <span class="badge bg-danger">
+                            BLACKLISTED
+                        </span>
 
                     {% endif %}</td>
 
-                    <td>
+                        <td>{% if staff.approval_status == "Approved" %}
 
-                            {% if staff.user.role != "Admin" and staff.user.status == "ACTIVE" %}
+                        <span class="badge bg-success">
+                                Approved
+                        </span>
 
-                            <a href="/deactivate_staff/{{ staff.id }}"
-                            class="btn btn-danger btn-sm">
-                                Deactivate
-                            </a>
+                        {% elif staff.approval_status == "Pending" %}
 
-                            {% elif staff.user.role!="Admin" and staff.user.status=="BLACKLISTED"%}
+                        <span class="badge bg-warning">
+                                Pending
+                        </span>
 
-                            <a href="/activate_staff/{{ staff.id }}"
-                            class="btn btn-success btn-sm">
-                                Activate
-                            </a>
+                        {% else %}
 
-                            {% endif %}
+                        <span class="badge bg-danger">
+                            Rejected
+                        </span>
 
-                    </td>
+                        {% endif %}</td>
 
-                </tr>
+                        <td>
 
-                {% endfor %}
+                                {% if staff.user.role != "Admin" and staff.user.status == "ACTIVE" %}
 
-            </tbody>
-        </table>
+                                <a href="/deactivate_staff/{{ staff.id }}"
+                                class="btn btn-danger btn-sm">
+                                    Deactivate
+                                </a>
+
+                                {% elif staff.user.role!="Admin" and staff.user.status=="BLACKLISTED"%}
+
+                                <a href="/activate_staff/{{ staff.id }}"
+                                class="btn btn-success btn-sm">
+                                    Activate
+                                </a>
+
+                                {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
 
     </div>
     

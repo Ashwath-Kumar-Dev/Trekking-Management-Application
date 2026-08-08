@@ -8,37 +8,44 @@
           rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container mt-5 position-relative">
+    
+    <a href="/staff_dashboard" class="btn btn-primary position-absolute top-0 end-0">
+        🏠 Staff Dashboard
+    </a>
 
-    <h2>Update Trek Status</h2>
+    
+    <div class="pt-5">
+        <h2>Update Trek Status</h2>
 
-    <h4>{{ trek.trek_name }}</h4>
+        <h4>{{ trek.trek_name }}</h4>
 
-    <form method="POST">
+        <form method="POST">
 
-        <label>Status</label>
+            <label>Status</label>
 
-        <select
-            name="status"
-            class="form-select">
+            <select
+                name="status"
+                class="form-select">
 
-            <option value="Open">Open</option>
+                <option value="Open">Open</option>
 
-            <option value="Ongoing">Ongoing</option>
+                <option value="Ongoing">Ongoing</option>
 
-            <option value="Completed">Completed</option>
+                <option value="Completed">Completed</option>
 
-        </select>
+            </select>
 
-        <br>
+            <br>
 
-        <button class="btn btn-success">
+            <button class="btn btn-success">
 
-            Save Status
+                Save Status
 
-        </button>
+            </button>
 
-    </form>
+        </form>
+    </div>
 
 </div>
 
