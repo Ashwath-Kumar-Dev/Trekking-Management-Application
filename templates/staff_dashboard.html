@@ -13,6 +13,8 @@
 
         <h3>My Assigned Treks</h3>
 
+        
+
         <table class="table table-bordered table-striped table-hover">
 
         <thead class="table-dark">
@@ -29,7 +31,11 @@
 
                 <th>Available Slots</th>
 
-                <th>Update Status</th>
+                <th>Number of Participants</th>
+
+                <th>Actions</th>
+
+                
 
             </tr>
 
@@ -51,10 +57,19 @@
 
                 <td>{{ trek.available_slots }}</td>
 
+                 <td> {{trek.participant_count}}</td>
+
                 <td>
                     <a href="/update_status/{{ trek.id }}"class="btn btn-warning btn-sm">
                         Update Status</a>
+
+                    <a href="/view_participants/{{ trek.id }}"
+                        class="btn btn-primary btn-sm">
+                            View Participants
+                    </a>
                 </td>
+
+               
 
             </tr>
 

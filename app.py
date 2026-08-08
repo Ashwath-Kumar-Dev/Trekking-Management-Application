@@ -134,11 +134,45 @@ def staff_dashboard():
 
     assigned_treks= Trek.query.filter_by(assigned_staff_id=staff.id).all()
 
+    for trek in assigned_treks:
+        trek.participant_count=Booking.query.filter_by(trek_id=trek.id,status="Booked").count()
+
     return render_template(
         "staff_dashboard.html",
         assigned_treks=assigned_treks,
         staff=staff
     )
+#Update booking status
+
+# Update booking status
+
+@app.route("/update_booking_status/<int:booking_id>", methods=["GET", "POST"])
+def update_booking_status(booking_id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if session["role"] != "Staff":
+        return "Access Denied!"
+
+    staff = StaffProfile.query.filter_by(
+        user_id=session["user_id"]
+    ).first()
+
+    if staff.approval_status != "Approved":
+        return "Your account is not approved yet."
+
+    booking = Booking.query.get_or_404(booking_id)
+
+    if booking.trek.assigned_staff_id != staff.id:
+        return "Access Denied!"
+
+    booking.status = "Completed"
+
+    db.session.commit()
+
+    return redirect("/view_participants/" + str(booking.trek_id))
+
 
 #trekker dashboard route
 
@@ -544,7 +578,23 @@ def activate_staff(staff_id):
     db.session.commit()
 
     return redirect("/view_staff")
-
+#View Participants in trek 
+@app.route("/view_participants/<int:trek_id>")
+def view_participants(trek_id):
+    if "user_id" not in session:
+        return redirect("/login")
+    if session["role"] != "Staff":
+            return "Access Denied!"
+    staff = StaffProfile.query.filter_by(
+    user_id=session["user_id"]).first()
+    trek = Trek.query.get_or_404(trek_id)
+    if trek.assigned_staff_id != staff.id:
+        return "Access Denied!"
+    bookings = Booking.query.filter_by(trek_id=trek.id).all()
+    participant_count = Booking.query.filter_by(trek_id=trek.id,status="Booked").count()
+    return render_template("view_participants.html",trek=trek,bookings=bookings,participant_count=participant_count)
+    
+    
 # Views all bookings in admin
 @app.route("/view_bookings")
 def view_bookings():
