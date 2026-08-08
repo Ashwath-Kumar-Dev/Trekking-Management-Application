@@ -9,10 +9,18 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h2 class= "text-center", style="color: burlywood; font-family: 'Times New Roman', Times, serif; ">Welcome {{ staff.user.username }}</h2><br>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            
+            <div style="width: 90px;" class="d-none d-md-block"></div>
 
-        <h3>My Assigned Treks</h3>
-
+                <h2 class="m-0" style="color: burlywood; font-family: 'Times New Roman', Times, serif;">
+                    Welcome {{ staff.user.username }}
+                </h2>
+            
+            
+                <a href="/logout" class="btn btn-danger btn-sm">Log Out</a>
+            
+        </div>
         
 
         <table class="table table-bordered table-striped table-hover">

@@ -90,7 +90,8 @@ def login():
             return redirect("/trekker_dashboard")
 
     return "Invalid email or password!"
-    
+
+# Admin Dashboard
 @app.route("/admin_dashboard")
 def admin_dashboard():
 
@@ -117,7 +118,7 @@ def admin_dashboard():
         total_bookings=total_bookings,
         total_staff=total_staff
     )
-#staff dashboard route
+#Staff dashboard route
 
 @app.route("/staff_dashboard")
 def staff_dashboard():
@@ -142,10 +143,9 @@ def staff_dashboard():
         assigned_treks=assigned_treks,
         staff=staff
     )
-#Update booking status
+
 
 # Update booking status
-
 @app.route("/update_booking_status/<int:booking_id>", methods=["GET", "POST"])
 def update_booking_status(booking_id):
 
@@ -185,7 +185,17 @@ def trekker_dashboard():
     if session["role"] != "Trekker":
         return "Access Denied!"
 
-    return "Welcome Trekker!"
+    user = User.query.get(session["user_id"])
+
+    total_bookings = Booking.query.filter_by(user_id=user.id).count()
+
+    booked_treks= Booking.query.filter_by(user_id=user.id,status="Booked").count()
+
+    completed_treks=Booking.query.filter_by(user_id=user.id,status="Completed").count()
+
+    return render_template("trekker_dashboard.html",user=user,total_bookings=total_bookings,
+    booked_treks=booked_treks,
+    completed_treks=completed_treks)
 
 #logout route
 @app.route("/logout")
@@ -428,26 +438,28 @@ def book_trek(trek_id):
 
     trek = Trek.query.get_or_404(trek_id)
 
-    existing_booked = Booking.query.filter_by(trek_id=trek.id,user_id = user.id).first()
+    existing_booked = Booking.query.filter_by(trek_id=trek.id,user_id = user.id,status="Booked").first()
 
     if existing_booked:
         return "You have already booked this trek!"
+    
+    if trek.status != "Open":
+        return "This trek is not open for booking."
 
     if trek.available_slots <= 0:
-        return "No slots available!"
+        return "Sorry, this trek is full. Please browse other treks."
     booking = Booking(
     user_id=user.id,
     trek_id=trek.id,
     booking_date=date.today(),
-    status="Booked",
-    payment_status="Pending")
+    status="Booked")
 
     db.session.add(booking)
 
     trek.available_slots -= 1
     db.session.commit()
 
-    return redirect("/browse_treks")
+    return redirect("/booking_history")
 
 #Booking history route
 @app.route("/booking_history")
@@ -480,7 +492,10 @@ def cancel_booking(booking_id):
         return "Access Denied!"
 
     booking = Booking.query.get_or_404(booking_id)
-
+    if booking.user_id != session["user_id"]:
+        return "Access Denied!"
+    if booking.status != "Booked":
+        return "This booking cannot be cancelled!"
     if booking.status == "Cancelled":
         return "Booking already cancelled!"
 
