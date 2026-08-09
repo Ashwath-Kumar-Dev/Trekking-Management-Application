@@ -74,4 +74,4 @@ The models are connected using SQLAlchemy relationships and foreign keys.
 Clone the repository:
 
 ```bash
-git clone https://github.com/25f2008445/Trekking-Management-Application.git
+git clone https://github.com/Ashwath-Kumar-Dev/Trekking-Management-Application
